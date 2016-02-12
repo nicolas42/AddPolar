@@ -5,34 +5,46 @@ import "math"
 import "math/cmplx"
 
 const (
-    Pi = math.Pi
-    RadToDeg = 180/Pi
-    DegToRad = Pi/180
-    RadToGrad = 200/Pi
-    GradToDeg = Pi/200
+	Pi        = math.Pi
+	RadToDeg  = 180 / Pi
+	DegToRad  = Pi / 180
+	RadToGrad = 200 / Pi
+	GradToDeg = Pi / 200
 )
 
 type Polar struct {
-	r float64
-	theta float64
+	radius float64
+	angle  float64
 }
 
-func makePolar(radius, angle float64) Polar {
-	return Polar{ r: radius, theta: angle }
+func makePolar(r, a float64) Polar {
+	return Polar{radius: r, angle: a}
 }
 
 func (p Polar) String() string {
-	return fmt.Sprintf("{r: %.2f theta: %.2f}", p.r, p.theta)
+	return fmt.Sprintf("{Radius: %.2f Angle: %.2f}", p.radius, p.angle)
+}
+
+func (p Polar) formatDegrees() string {
+	return fmt.Sprintf("{Radius: %.2f Angle: %.2f degrees}", p.radius, p.angle*RadToDeg)
+}
+
+func addPolar(a, b Polar) Polar {
+
+	// Add polar coordinates (5,140) and (3,70)
+	x := cmplx.Rect(a.radius, a.angle)
+	y := cmplx.Rect(b.radius, b.angle)
+	radius, angle := cmplx.Polar(x + y)
+	return Polar{radius, angle}
+
 }
 
 func main() {
 
-	// Add polar coordinates (5,140) and (3,70)
-	x := cmplx.Rect(5,140*DegToRad)
-	y := cmplx.Rect(3, 70*DegToRad)
-	r, theta := cmplx.Polar(x + y)
-	p := Polar{r, theta}
-	fmt.Println(p)
-
+	// flags processing
+	// addpolar 5 140 3 70
+	p1, p2 := Polar{5, 140 * DegToRad}, Polar{3, 70 * DegToRad}
+	p3 := addPolar(p1, p2)
+	println("Add (5,140deg) and (3,70deg)")
+	println(p3.formatDegrees())
 }
-
