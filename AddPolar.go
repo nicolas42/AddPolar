@@ -39,12 +39,21 @@ func addPolar(a, b Polar) Polar {
 
 }
 
+func addPolarDegrees(p1, p2 Polar) Polar {
+	p1.angle *= DegToRad
+	p2.angle *= DegToRad
+	p3 := addPolar(p1, p2)
+	p3.angle *= RadToDeg
+	return p3
+}
+
 func main() {
 
 	// flags processing
 	// addpolar 5 140 3 70
-	p1, p2 := Polar{5, 140 * DegToRad}, Polar{3, 70 * DegToRad}
-	p3 := addPolar(p1, p2)
-	println("Add (5,140deg) and (3,70deg)")
-	println(p3.formatDegrees())
+	
+	// Using degrees
+	var a,b,c,d float64 = 5,140,3,70
+	p := addPolarDegrees( Polar{a,b}, Polar{c,d})
+	fmt.Println(p)
 }
